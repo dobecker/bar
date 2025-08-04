@@ -282,7 +282,7 @@
 
     window.onload = () => {
         const stored = localStorage.getItem('drinks');
-        drinks = stored ? JSON.parse(stored) : [];
+        drinks = stored ? JSON.parse(stored) : defaultDrinks;
         const ord = localStorage.getItem('order');
         order = ord ? JSON.parse(ord) : {};
         drinks.forEach(d => order[d.id] ??= 0);
