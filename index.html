@@ -66,6 +66,11 @@
             margin-top: 6px;
         }
 
+        .drink-name .unitprice {
+            font-size: 0.7rem;
+            font-weight: 300;
+        }
+
         .controls {
             display: flex;
             justify-content: center;
@@ -75,11 +80,10 @@
         }
 
         .controls button {
-            width: 32px;
-            height: 32px;
-            font-size: 1rem;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
             border: none;
-            border-radius: 50%;
             cursor: pointer;
             color: white;
         }
@@ -94,7 +98,8 @@
 
         .counter {
             font-size: 1rem;
-            min-width: 20px;
+            font-weight: bolder;
+            min-width: 10px;
         }
 
         .summary {
@@ -194,23 +199,30 @@
     <div class="form-group">
         <label for="drinkEmoji">Emoji</label>
         <select id="drinkEmoji">
-            <option value="🍺">🍺 Bier</option>
-            <option value="🍷">🍷 Wein</option>
-            <option value="🥂">🥂 Sekt</option>
-            <option value="🍸">🍸 Cocktail</option>
-            <option value="🍹">🍹 Tropen</option>
-            <option value="🍾">🍾 Champagner</option>
-            <option value="🧃">🧃 Saft</option>
-            <option value="🥤">🥤 Softdrink</option>
-            <option value="🧋">🧋 Bubble Tea</option>
-            <option value="☕">☕ Kaffee</option>
-            <option value="🫗">🫗 Leeres Glas</option>
+            <option value="🍺">🍺</option>
+            <option value="🍺🚫">🍺🚫</option>
+            <option value="🍷">🍷</option>
+            <option value="🥃">🥃</option>
+            <option value="🥂">🥂</option>
+            <option value="🍸">🍸</option>
+            <option value="🫙">🫙</option>
+            <option value="🚰">🚰</option>
+            <option value="🍹">🍹</option>
+            <option value="🍾">🍾</option>
+            <option value="🧃">🧃</option>
+            <option value="🥤">🥤</option>
+            <option value="🧋">🧋</option>
+            <option value="☕">☕</option>
+            <option value="🫗">🫗</option>
         </select>
     </div>
     <button class="btn btn-add" onclick="addDrink()">✅ Hinzufügen</button>
 
     <div id="configuredDrinks"></div>
     <button class="btn btn-back" onclick="toggleView()">← Zurück</button>
+    <div style="text-align: center; margin-top: 30px;">
+        <button class="btn btn-delete" onclick="resetDefaultDrinks()">Getränkeliste zurücksetzen</button>
+    </div>
 </div>
 
 <div class="summary">
@@ -222,6 +234,51 @@
     let drinks = [];
     let order = {};
     let view = 'main';
+
+    let defaultDrinks = [
+        {
+            "id": 1754314600229,
+            "name": "Bier",
+            "price": 5,
+            "emoji": "🍺"
+        },
+        {
+            "id": 1754314547340,
+            "name": "Limonade",
+            "price": 4.5,
+            "emoji": "🥤"
+        },
+        {
+            "id": 1754314508965,
+            "name": "Wasser",
+            "price": 3,
+            "emoji": "🚰"
+        },
+        {
+            "id": 1754314275641,
+            "name": "Schorle",
+            "price": 3.5,
+            "emoji": "🧃"
+        },
+        {
+            "id": 1754314569245,
+            "name": "Alk. freie Biere",
+            "price": 8,
+            "emoji": "🍺🚫"
+        },
+        {
+            "id": 1754314451815,
+            "name": "Schnaps",
+            "price": 2.5,
+            "emoji": "🥃"
+        },
+        {
+            "id": 1754314641597,
+            "name": "Pfand zurück",
+            "price": -2,
+            "emoji": "🫙"
+        }
+    ];
 
     window.onload = () => {
         const stored = localStorage.getItem('drinks');
@@ -285,10 +342,10 @@
         grid.innerHTML = drinks.map(d => `
         <div class="drink-item">
           <div class="drink-emoji">${d.emoji}</div>
-          <div class="drink-name">${d.name}<br>€${d.price.toFixed(2)}</div>
+          <div class="drink-name">${d.name}<br><span class="unitprice">€${d.price.toFixed(2)}</span></div>
+                   <div class="counter">${order[d.id] || 0}</div>
           <div class="controls">
             <button class="btn-minus" onclick="update(${d.id}, -1)">−</button>
-            <div class="counter">${order[d.id] || 0}</div>
             <button class="btn-plus" onclick="update(${d.id}, 1)">+</button>
           </div>
         </div>
@@ -305,6 +362,15 @@
           <button class="btn-delete" onclick="removeDrink(${d.id})">🗑️</button>
         </div>
       `).join('');
+    }
+
+    function resetDefaultDrinks() {
+        if (window.confirm('Getränkeliste wirklich zurücksetzen? Neu hinzugefügte Getränke gehen verloren.')) {
+            drinks = defaultDrinks;
+            save();
+            render();
+            renderConfigured();
+        }
     }
 </script>
 </body>
