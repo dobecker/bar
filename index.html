@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -15,217 +15,102 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 10px;
             color: #333;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             background: white;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             overflow: hidden;
-            min-height: calc(100vh - 40px);
+            min-height: calc(100vh - 20px);
         }
 
         .header {
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             color: white;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
             position: relative;
         }
 
         .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+            font-size: 2rem;
         }
 
         .config-btn {
             position: absolute;
-            right: 30px;
+            right: 20px;
             top: 50%;
             transform: translateY(-50%);
             background: rgba(255,255,255,0.2);
             border: 2px solid rgba(255,255,255,0.3);
             color: white;
-            padding: 15px 25px;
-            border-radius: 15px;
+            padding: 10px 15px;
+            border-radius: 12px;
             font-size: 1.1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .config-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-50%) scale(1.05);
         }
 
         .content {
-            padding: 30px 30px 100px 30px;
-        }
-
-        /* Configuration Page */
-        .config-page {
-            display: none;
-        }
-
-        .config-form {
-            background: #f8f9fa;
-            padding: 30px;
-            border-radius: 15px;
-            margin-bottom: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 600;
-            font-size: 1.2rem;
-            color: #2c3e50;
-        }
-
-        .form-group input {
-            width: 100%;
             padding: 20px;
-            border: 3px solid #e9ecef;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
         }
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 5px rgba(102, 126, 234, 0.1);
-        }
-
-        .btn {
-            padding: 20px 40px;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 10px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background: #545b62;
-            transform: translateY(-3px);
-        }
-
-        /* Drinks List */
         .drinks-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 12px;
             margin-bottom: 30px;
         }
 
         .drink-item {
             background: white;
-            border: 3px solid #e9ecef;
-            border-radius: 15px;
-            padding: 20px;
-            display: block;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 10px;
             transition: all 0.3s ease;
-        }
-
-        .drink-item:hover {
-            border-color: #667eea;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
         }
 
         .drink-image {
-            width: 70px;
-            height: 70px;
-            box-shadow: 0 -5px 10px rgba(0,0,0,0.2);
-            border-radius: 15px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: white;
-            overflow: hidden;
-            flex-shrink: 0;
-            margin: auto;
-        }
-
-        .drink-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 15px;
-        }
-
-        .drink-info {
-            flex: 1;
-            text-align: center;
-            margin: auto;
         }
 
         .drink-name {
-            font-size: 1.4rem;
+            font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 5px;
             color: #2c3e50;
-        }
-
-        .drink-price {
-            font-size: 1.3rem;
-            color: #667eea;
-            font-weight: 600;
         }
 
         .quantity-controls {
             display: flex;
             align-items: center;
-            gap: 15px;
-            flex-shrink: 0;
+            gap: 10px;
         }
 
         .quantity-btn {
-            width: 60px;
-            height: 60px;
+            width: 36px;
+            height: 36px;
             border: none;
-            font-size: 2rem;
+            border-radius: 50%;
+            font-size: 1.3rem;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.1s ease;
         }
 
         .quantity-btn.minus {
@@ -238,39 +123,30 @@
             color: white;
         }
 
-        .quantity-btn:hover {
-            transform: scale(1.1);
-        }
-
         .quantity-display {
-            font-size: 1.8rem;
+            font-size: 1.2rem;
             font-weight: bold;
             color: #2c3e50;
-            min-width: 30px;
+            min-width: 24px;
         }
 
-        /* Order Summary */
         .order-summary {
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             color: white;
-            padding: 15px 30px;
-            text-align: center;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             z-index: 100;
-            box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
-            margin: 0;
+            font-size: 1.2rem;
         }
 
         .total-price {
-            font-size: 2.5rem;
+            font-size: 1.8rem;
             font-weight: bold;
         }
 
@@ -278,17 +154,51 @@
             background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
             color: white;
             border: none;
-            padding: 15px 30px;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
-        .reset-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
         }
 
         .configured-drinks {
@@ -296,47 +206,18 @@
         }
 
         .configured-drink {
-            background: white;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
 
-        .drink-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .drink-info-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #6c757d;
-        }
-
-        .empty-state h3 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        @media (max-width: 768px) {
-
-            .order-summary {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .total-price {
-                font-size: 1.5rem;
+        @media (min-width: 600px) {
+            .drinks-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             }
         }
     </style>
@@ -348,108 +229,51 @@
         <button class="config-btn" onclick="toggleView()">⚙️</button>
     </div>
 
-    <!-- Main Page -->
+    <!-- Main -->
     <div class="content main-page">
         <div class="drinks-list" id="drinksList"></div>
         <div class="order-summary">
-            <div>
-                <div style="font-size: 1.2rem; margin-bottom: 10px;">Gesamt: <span class="total-price" id="totalPrice">€0,00</span></div>
-            </div>
-            <button class="reset-btn" onclick="resetOrder()">löschen</button>
+            <div>Gesamt: <span class="total-price" id="totalPrice">€0,00</span></div>
+            <button class="reset-btn" onclick="resetOrder()">Löschen</button>
         </div>
     </div>
 
-    <!-- Configuration Page -->
-    <div class="content config-page">
-        <div class="config-form">
-            <h2 style="margin-bottom: 30px; color: #2c3e50; font-size: 2rem;">Neues Getränk hinzufügen</h2>
-            <div class="form-group">
-                <label for="drinkName">Name des Getränks:</label>
-                <input type="text" id="drinkName" placeholder="z.B. Bier, Wein, Cocktail"/>
-            </div>
-            <div class="form-group">
-                <label for="drinkPrice">Preis (€):</label>
-                <input type="number" id="drinkPrice" step="0.01" placeholder="z.B. 4,50 oder -0,50 für Rückgabe"/>
-            </div>
-            <div class="form-group">
-                <label for="drinkEmoji">Emoji auswählen:</label>
-                <select id="drinkEmoji" style="padding: 15px; font-size: 1.5rem;">
-                    <option value="🍺">🍺</option>
-                    <option value="🍺🚫">🍺🚫</option>
-                    <option value="🍷">🍷</option>
-                    <option value="🥃">🥃</option>
-                    <option value="🥂">🥂</option>
-                    <option value="🍸">🍸</option>
-                    <option value="🫙">🫙</option>
-                    <option value="🚰">🚰</option>
-                    <option value="🍹">🍹</option>
-                    <option value="🍾">🍾</option>
-                    <option value="🧃">🧃</option>
-                    <option value="🥤">🥤</option>
-                    <option value="🧋">🧋</option>
-                    <option value="☕">☕</option>
-                    <option value="🫗">🫗</option>
-                    <option value="🫗">🫗</option>
-                </select>
-            </div>
-            <button class="btn btn-primary" onclick="addDrink()">✅ Getränk hinzufügen</button>
+    <!-- Config -->
+    <div class="content config-page" style="display:none;">
+        <h2>Neues Getränk hinzufügen</h2>
+        <div class="form-group">
+            <label for="drinkName">Name:</label>
+            <input type="text" id="drinkName">
         </div>
+        <div class="form-group">
+            <label for="drinkPrice">Preis (€):</label>
+            <input type="number" id="drinkPrice" step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="drinkEmoji">Emoji:</label>
+            <select id="drinkEmoji">
+                <option value="🍺">🍺 Bier</option>
+                <option value="🍷">🍷 Wein</option>
+                <option value="🥂">🥂 Sekt</option>
+                <option value="🍸">🍸 Cocktail</option>
+                <option value="🍹">🍹 Tropischer Cocktail</option>
+                <option value="🍾">🍾 Champagner</option>
+                <option value="🧃">🧃 Saft</option>
+                <option value="🥤">🥤 Softdrink</option>
+                <option value="🧋">🧋 Bubble Tea</option>
+                <option value="☕">☕ Kaffee</option>
+                <option value="🫗">🫗 Leeres Glas</option>
+            </select>
+        </div>
+        <button class="btn btn-primary" onclick="addDrink()">✅ Hinzufügen</button>
         <div class="configured-drinks" id="configuredDrinks"></div>
-        <div style="text-align: center; margin-top: 30px;">
-            <button class="btn btn-secondary" onclick="toggleView()">← Zurück zur Kasse</button>
-        </div>
-        <div style="text-align: center; margin-top: 30px;">
-            <button class="btn btn-danger" onclick="resetDefaultDrinks()">Getränkeliste zurücksetzen</button>
+        <div style="margin-top: 20px; text-align:center;">
+            <button class="btn btn-secondary" onclick="toggleView()">← Zurück</button>
         </div>
     </div>
 </div>
 
 <script>
-    let defaultDrinks = [
-        {
-            "id": 1754314600229,
-            "name": "Bier",
-            "price": 5,
-            "emoji": "🍺"
-        },
-        {
-            "id": 1754314547340,
-            "name": "Limonade",
-            "price": 4.5,
-            "emoji": "🥤"
-        },
-        {
-            "id": 1754314508965,
-            "name": "Wasser",
-            "price": 3,
-            "emoji": "🚰"
-        },
-        {
-            "id": 1754314275641,
-            "name": "Schorle",
-            "price": 3.5,
-            "emoji": "🧃"
-        },
-        {
-            "id": 1754314569245,
-            "name": "Alk. freie Biere",
-            "price": 8,
-            "emoji": "🍺🚫"
-        },
-        {
-            "id": 1754314451815,
-            "name": "Schnaps",
-            "price": 2.5,
-            "emoji": "🥃"
-        },
-        {
-            "id": 1754314641597,
-            "name": "Pfand zurück",
-            "price": -2,
-            "emoji": "🫙"
-        }
-    ];
-
     let drinks = [];
     let order = {};
     let currentView = 'main';
@@ -469,7 +293,7 @@
     function loadDrinks() {
         const savedDrinks = localStorage.getItem('drinks');
         const savedOrder = localStorage.getItem('order');
-        drinks = savedDrinks ? JSON.parse(savedDrinks) : defaultDrinks;
+        drinks = savedDrinks ? JSON.parse(savedDrinks) : [];
         order = savedOrder ? JSON.parse(savedOrder) : {};
         drinks.forEach(drink => {
             if (!(drink.id in order)) {
@@ -479,16 +303,15 @@
     }
 
     function toggleView() {
-        const mainPage = document.querySelector('.main-page');
-        const configPage = document.querySelector('.config-page');
-
+        const main = document.querySelector('.main-page');
+        const config = document.querySelector('.config-page');
         if (currentView === 'main') {
-            mainPage.style.display = 'none';
-            configPage.style.display = 'block';
+            main.style.display = 'none';
+            config.style.display = 'block';
             currentView = 'config';
         } else {
-            configPage.style.display = 'none';
-            mainPage.style.display = 'block';
+            config.style.display = 'none';
+            main.style.display = 'block';
             currentView = 'main';
         }
     }
@@ -499,17 +322,11 @@
         const emoji = document.getElementById('drinkEmoji').value;
 
         if (!name || isNaN(price)) {
-            alert('Bitte füllen Sie den Getränkenamen und Preis aus!');
+            alert('Bitte Name und Preis eingeben!');
             return;
         }
 
-        const drink = {
-            id: Date.now(),
-            name: name,
-            price: price,
-            emoji: emoji
-        };
-
+        const drink = { id: Date.now(), name, price, emoji };
         drinks.push(drink);
         order[drink.id] = 0;
 
@@ -517,7 +334,6 @@
         renderDrinks();
         renderConfiguredDrinks();
 
-        // Clear form
         document.getElementById('drinkName').value = '';
         document.getElementById('drinkPrice').value = '';
         document.getElementById('drinkEmoji').value = '🍺';
@@ -533,65 +349,44 @@
     }
 
     function renderDrinks() {
-        const container = document.getElementById('drinksList');
-
+        const list = document.getElementById('drinksList');
         if (drinks.length === 0) {
-            container.innerHTML = `
-        <div class="empty-state">
-          <h3>Noch keine Getränke konfiguriert</h3>
-          <p>Klicke auf das Zahnrad Symbol!</p>
-        </div>`;
+            list.innerHTML = '<div style="text-align:center; padding:20px;">Keine Getränke vorhanden.</div>';
             return;
         }
 
-        container.innerHTML = drinks.map(drink => `
+        list.innerHTML = drinks.map(drink => `
       <div class="drink-item">
-        <div class="drink-image">
-          ${drink.emoji || '🥤'}
-        </div>
-        <div class="drink-info">
-          <div class="drink-name">${drink.name}<br/>€${drink.price.toFixed(2)}</div>
-        </div>
-        <br/>
+        <div class="drink-image">${drink.emoji}</div>
+        <div class="drink-name">${drink.name}<br/>€${drink.price.toFixed(2)}</div>
         <div class="quantity-controls">
           <button class="quantity-btn minus" onclick="updateQuantity(${drink.id}, -1)">−</button>
           <div class="quantity-display">${order[drink.id] || 0}</div>
           <button class="quantity-btn plus" onclick="updateQuantity(${drink.id}, 1)">+</button>
         </div>
-      </div>`).join('');
+      </div>
+    `).join('');
     }
 
     function renderConfiguredDrinks() {
         const container = document.getElementById('configuredDrinks');
-
         if (drinks.length === 0) {
-            container.innerHTML = '<p style="text-align: center; color: #6c757d;">Noch keine Getränke hinzugefügt.</p>';
+            container.innerHTML = '<p style="text-align:center; color:#888;">Noch keine Getränke konfiguriert.</p>';
             return;
         }
 
-        const drinksHTML = drinks.map(drink => `
+        container.innerHTML = drinks.map(drink => `
       <div class="configured-drink">
-        <div class="drink-info">
-          <div style="width: 40px; height: 40px; border-radius: 8px; overflow: hidden; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
-            ${drink.emoji || '🥤'}
-          </div>
-          <div class="drink-info-text">
-            <strong>${drink.name}</strong>
-            <span style="color: #667eea;">€${drink.price.toFixed(2)}</span>
-          </div>
-        </div>
-        <button class="btn btn-danger" style="padding: 10px 20px; font-size: 1rem;" onclick="removeDrink(${drink.id})">🗑️ Entfernen</button>
-      </div>`).join('');
-
-        container.innerHTML = `
-      <h3 style="margin-bottom: 20px; color: #2c3e50; font-size: 1.8rem;">Konfigurierte Getränke</h3>
-      ${drinksHTML}`;
+        <span>${drink.emoji} ${drink.name} (€${drink.price.toFixed(2)})</span>
+        <button class="btn btn-danger" onclick="removeDrink(${drink.id})">🗑️</button>
+      </div>
+    `).join('');
     }
 
-    function updateQuantity(drinkId, change) {
-        if (!order[drinkId]) order[drinkId] = 0;
-        order[drinkId] += change;
-        if (order[drinkId] < 0) order[drinkId] = 0;
+    function updateQuantity(id, delta) {
+        if (!order[id]) order[id] = 0;
+        order[id] += delta;
+        if (order[id] < 0) order[id] = 0;
         saveDrinks();
         renderDrinks();
         updateTotal();
@@ -599,31 +394,18 @@
 
     function updateTotal() {
         let total = 0;
-        for (let drinkId in order) {
-            const drink = drinks.find(d => d.id == drinkId);
-            if (drink) {
-                total += drink.price * order[drinkId];
-            }
+        for (let id in order) {
+            const drink = drinks.find(d => d.id == id);
+            if (drink) total += drink.price * order[id];
         }
         document.getElementById('totalPrice').textContent = `€${total.toFixed(2).replace('.', ',')}`;
     }
 
     function resetOrder() {
-        Object.keys(order).forEach(drinkId => {
-            order[drinkId] = 0;
-        });
+        Object.keys(order).forEach(id => order[id] = 0);
         saveDrinks();
         renderDrinks();
         updateTotal();
-    }
-
-    function resetDefaultDrinks() {
-        if (window.confirm('Getränkeliste wirklich zurücksetzen? Neu hinzugefügte Getränke gehen verloren.')) {
-            drinks = defaultDrinks;
-            saveDrinks();
-            renderDrinks();
-            renderConfiguredDrinks();
-        }
     }
 </script>
 </body>
