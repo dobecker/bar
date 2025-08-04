@@ -3,409 +3,308 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Bar Kassensystem</title>
+    <title>Bar</title>
     <style>
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 10px;
-            color: #333;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-            min-height: calc(100vh - 20px);
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            background: #f5f5f5;
+            padding-bottom: 80px;
         }
 
         .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: #333;
             color: white;
-            padding: 20px;
+            padding: 16px;
             text-align: center;
-            position: relative;
-        }
-
-        .header h1 {
-            font-size: 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         .config-btn {
             position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255,255,255,0.2);
-            border: 2px solid rgba(255,255,255,0.3);
+            right: 16px;
+            top: 16px;
+            background: #555;
             color: white;
-            padding: 10px 15px;
-            border-radius: 12px;
-            font-size: 1.1rem;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
             cursor: pointer;
         }
 
-        .content {
-            padding: 20px;
+        .main, .config {
+            padding: 16px;
         }
 
-        .drinks-list {
+        .drinks-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
             gap: 12px;
-            margin-bottom: 30px;
         }
 
         .drink-item {
             background: white;
-            border: 2px solid #e9ecef;
             border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
+            padding: 10px;
             text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .drink-image {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: white;
+        .drink-emoji {
+            font-size: 1.8rem;
         }
 
         .drink-name {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            color: #2c3e50;
+            margin-top: 6px;
         }
 
-        .quantity-controls {
+        .controls {
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 10px;
+            margin-top: 8px;
+            gap: 8px;
         }
 
-        .quantity-btn {
-            width: 36px;
-            height: 36px;
+        .controls button {
+            width: 32px;
+            height: 32px;
+            font-size: 1rem;
             border: none;
             border-radius: 50%;
-            font-size: 1.3rem;
-            font-weight: bold;
             cursor: pointer;
-        }
-
-        .quantity-btn.minus {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
             color: white;
         }
 
-        .quantity-btn.plus {
-            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
-            color: white;
+        .btn-plus {
+            background: #28a745;
         }
 
-        .quantity-display {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #2c3e50;
-            min-width: 24px;
+        .btn-minus {
+            background: #dc3545;
         }
 
-        .order-summary {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .counter {
+            font-size: 1rem;
+            min-width: 20px;
+        }
+
+        .summary {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            z-index: 100;
-            font-size: 1.2rem;
-        }
-
-        .total-price {
-            font-size: 1.8rem;
-            font-weight: bold;
-        }
-
-        .reset-btn {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            background: #333;
             color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 1rem;
-            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+            font-size: 1.1rem;
+        }
+
+        .config {
+            display: none;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .form-group label {
-            font-weight: bold;
             display: block;
-            margin-bottom: 5px;
+            font-weight: bold;
+            margin-bottom: 6px;
         }
 
         .form-group input, .form-group select {
             width: 100%;
-            padding: 12px;
+            padding: 8px;
             font-size: 1rem;
-            border-radius: 10px;
-            border: 2px solid #e9ecef;
         }
 
-        .btn {
-            padding: 12px 24px;
-            border-radius: 12px;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-            color: white;
-        }
-
-        .configured-drinks {
-            margin-top: 30px;
-        }
-
-        .configured-drink {
+        .drink-config {
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            margin-bottom: 10px;
         }
 
-        @media (min-width: 600px) {
-            .drinks-list {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
+        .btn {
+            padding: 10px 16px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-add {
+            background: #007bff;
+            color: white;
+        }
+
+        .btn-back {
+            background: #6c757d;
+            color: white;
+            width: 100%;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1>🍻</h1>
-        <button class="config-btn" onclick="toggleView()">⚙️</button>
-    </div>
+<div class="header">
+    🍺
+    <button class="config-btn" onclick="toggleView()">⚙️</button>
+</div>
 
-    <!-- Main -->
-    <div class="content main-page">
-        <div class="drinks-list" id="drinksList"></div>
-        <div class="order-summary">
-            <div>Gesamt: <span class="total-price" id="totalPrice">€0,00</span></div>
-            <button class="reset-btn" onclick="resetOrder()">Löschen</button>
-        </div>
-    </div>
+<div class="main">
+    <div class="drinks-grid" id="drinksGrid"></div>
+</div>
 
-    <!-- Config -->
-    <div class="content config-page" style="display:none;">
-        <h2>Neues Getränk hinzufügen</h2>
-        <div class="form-group">
-            <label for="drinkName">Name:</label>
-            <input type="text" id="drinkName">
-        </div>
-        <div class="form-group">
-            <label for="drinkPrice">Preis (€):</label>
-            <input type="number" id="drinkPrice" step="0.01">
-        </div>
-        <div class="form-group">
-            <label for="drinkEmoji">Emoji:</label>
-            <select id="drinkEmoji">
-                <option value="🍺">🍺 Bier</option>
-                <option value="🍷">🍷 Wein</option>
-                <option value="🥂">🥂 Sekt</option>
-                <option value="🍸">🍸 Cocktail</option>
-                <option value="🍹">🍹 Tropischer Cocktail</option>
-                <option value="🍾">🍾 Champagner</option>
-                <option value="🧃">🧃 Saft</option>
-                <option value="🥤">🥤 Softdrink</option>
-                <option value="🧋">🧋 Bubble Tea</option>
-                <option value="☕">☕ Kaffee</option>
-                <option value="🫗">🫗 Leeres Glas</option>
-            </select>
-        </div>
-        <button class="btn btn-primary" onclick="addDrink()">✅ Hinzufügen</button>
-        <div class="configured-drinks" id="configuredDrinks"></div>
-        <div style="margin-top: 20px; text-align:center;">
-            <button class="btn btn-secondary" onclick="toggleView()">← Zurück</button>
-        </div>
+<div class="config">
+    <h2>Getränk hinzufügen</h2>
+    <div class="form-group">
+        <label for="drinkName">Name</label>
+        <input type="text" id="drinkName" />
     </div>
+    <div class="form-group">
+        <label for="drinkPrice">Preis (€)</label>
+        <input type="number" step="0.01" id="drinkPrice" />
+    </div>
+    <div class="form-group">
+        <label for="drinkEmoji">Emoji</label>
+        <select id="drinkEmoji">
+            <option value="🍺">🍺 Bier</option>
+            <option value="🍷">🍷 Wein</option>
+            <option value="🥂">🥂 Sekt</option>
+            <option value="🍸">🍸 Cocktail</option>
+            <option value="🍹">🍹 Tropen</option>
+            <option value="🍾">🍾 Champagner</option>
+            <option value="🧃">🧃 Saft</option>
+            <option value="🥤">🥤 Softdrink</option>
+            <option value="🧋">🧋 Bubble Tea</option>
+            <option value="☕">☕ Kaffee</option>
+            <option value="🫗">🫗 Leeres Glas</option>
+        </select>
+    </div>
+    <button class="btn btn-add" onclick="addDrink()">✅ Hinzufügen</button>
+
+    <div id="configuredDrinks"></div>
+    <button class="btn btn-back" onclick="toggleView()">← Zurück</button>
+</div>
+
+<div class="summary">
+    <span>Gesamt: <strong id="totalPrice">€0,00</strong></span>
+    <button class="btn-delete" onclick="resetOrder()">🗑️ Löschen</button>
 </div>
 
 <script>
     let drinks = [];
     let order = {};
-    let currentView = 'main';
+    let view = 'main';
 
-    window.onload = function () {
-        loadDrinks();
-        renderDrinks();
-        renderConfiguredDrinks();
-        updateTotal();
+    window.onload = () => {
+        const stored = localStorage.getItem('drinks');
+        drinks = stored ? JSON.parse(stored) : [];
+        const ord = localStorage.getItem('order');
+        order = ord ? JSON.parse(ord) : {};
+        drinks.forEach(d => order[d.id] ??= 0);
+        render();
     };
 
-    function saveDrinks() {
+    function save() {
         localStorage.setItem('drinks', JSON.stringify(drinks));
         localStorage.setItem('order', JSON.stringify(order));
     }
 
-    function loadDrinks() {
-        const savedDrinks = localStorage.getItem('drinks');
-        const savedOrder = localStorage.getItem('order');
-        drinks = savedDrinks ? JSON.parse(savedDrinks) : [];
-        order = savedOrder ? JSON.parse(savedOrder) : {};
-        drinks.forEach(drink => {
-            if (!(drink.id in order)) {
-                order[drink.id] = 0;
-            }
-        });
-    }
-
     function toggleView() {
-        const main = document.querySelector('.main-page');
-        const config = document.querySelector('.config-page');
-        if (currentView === 'main') {
-            main.style.display = 'none';
-            config.style.display = 'block';
-            currentView = 'config';
-        } else {
-            config.style.display = 'none';
-            main.style.display = 'block';
-            currentView = 'main';
-        }
+        view = view === 'main' ? 'config' : 'main';
+        document.querySelector('.main').style.display = view === 'main' ? 'block' : 'none';
+        document.querySelector('.config').style.display = view === 'config' ? 'block' : 'none';
+        if (view === 'config') renderConfigured();
     }
 
     function addDrink() {
         const name = document.getElementById('drinkName').value.trim();
         const price = parseFloat(document.getElementById('drinkPrice').value);
         const emoji = document.getElementById('drinkEmoji').value;
+        if (!name || isNaN(price)) return alert('Bitte alle Felder ausfüllen.');
 
-        if (!name || isNaN(price)) {
-            alert('Bitte Name und Preis eingeben!');
-            return;
-        }
-
-        const drink = { id: Date.now(), name, price, emoji };
-        drinks.push(drink);
-        order[drink.id] = 0;
-
-        saveDrinks();
-        renderDrinks();
-        renderConfiguredDrinks();
-
+        const id = Date.now();
+        drinks.push({ id, name, price, emoji });
+        order[id] = 0;
+        save();
+        render();
+        renderConfigured();
         document.getElementById('drinkName').value = '';
         document.getElementById('drinkPrice').value = '';
-        document.getElementById('drinkEmoji').value = '🍺';
     }
 
     function removeDrink(id) {
-        drinks = drinks.filter(drink => drink.id !== id);
+        drinks = drinks.filter(d => d.id !== id);
         delete order[id];
-        saveDrinks();
-        renderDrinks();
-        renderConfiguredDrinks();
-        updateTotal();
+        save();
+        render();
+        renderConfigured();
     }
 
-    function renderDrinks() {
-        const list = document.getElementById('drinksList');
-        if (drinks.length === 0) {
-            list.innerHTML = '<div style="text-align:center; padding:20px;">Keine Getränke vorhanden.</div>';
-            return;
-        }
-
-        list.innerHTML = drinks.map(drink => `
-      <div class="drink-item">
-        <div class="drink-image">${drink.emoji}</div>
-        <div class="drink-name">${drink.name}<br/>€${drink.price.toFixed(2)}</div>
-        <div class="quantity-controls">
-          <button class="quantity-btn minus" onclick="updateQuantity(${drink.id}, -1)">−</button>
-          <div class="quantity-display">${order[drink.id] || 0}</div>
-          <button class="quantity-btn plus" onclick="updateQuantity(${drink.id}, 1)">+</button>
-        </div>
-      </div>
-    `).join('');
-    }
-
-    function renderConfiguredDrinks() {
-        const container = document.getElementById('configuredDrinks');
-        if (drinks.length === 0) {
-            container.innerHTML = '<p style="text-align:center; color:#888;">Noch keine Getränke konfiguriert.</p>';
-            return;
-        }
-
-        container.innerHTML = drinks.map(drink => `
-      <div class="configured-drink">
-        <span>${drink.emoji} ${drink.name} (€${drink.price.toFixed(2)})</span>
-        <button class="btn btn-danger" onclick="removeDrink(${drink.id})">🗑️</button>
-      </div>
-    `).join('');
-    }
-
-    function updateQuantity(id, delta) {
-        if (!order[id]) order[id] = 0;
-        order[id] += delta;
-        if (order[id] < 0) order[id] = 0;
-        saveDrinks();
-        renderDrinks();
-        updateTotal();
-    }
-
-    function updateTotal() {
-        let total = 0;
-        for (let id in order) {
-            const drink = drinks.find(d => d.id == id);
-            if (drink) total += drink.price * order[id];
-        }
-        document.getElementById('totalPrice').textContent = `€${total.toFixed(2).replace('.', ',')}`;
+    function update(id, delta) {
+        order[id] = Math.max(0, (order[id] || 0) + delta);
+        save();
+        render();
     }
 
     function resetOrder() {
         Object.keys(order).forEach(id => order[id] = 0);
-        saveDrinks();
-        renderDrinks();
-        updateTotal();
+        save();
+        render();
+    }
+
+    function render() {
+        const grid = document.getElementById('drinksGrid');
+        grid.innerHTML = drinks.map(d => `
+        <div class="drink-item">
+          <div class="drink-emoji">${d.emoji}</div>
+          <div class="drink-name">${d.name}<br>€${d.price.toFixed(2)}</div>
+          <div class="controls">
+            <button class="btn-minus" onclick="update(${d.id}, -1)">−</button>
+            <div class="counter">${order[d.id] || 0}</div>
+            <button class="btn-plus" onclick="update(${d.id}, 1)">+</button>
+          </div>
+        </div>
+      `).join('');
+        const total = drinks.reduce((sum, d) => sum + (order[d.id] || 0) * d.price, 0);
+        document.getElementById('totalPrice').textContent = `€${total.toFixed(2).replace('.', ',')}`;
+    }
+
+    function renderConfigured() {
+        const cont = document.getElementById('configuredDrinks');
+        cont.innerHTML = drinks.map(d => `
+        <div class="drink-config">
+          <span>${d.emoji} ${d.name} – €${d.price.toFixed(2)}</span>
+          <button class="btn-delete" onclick="removeDrink(${d.id})">🗑️</button>
+        </div>
+      `).join('');
     }
 </script>
 </body>
