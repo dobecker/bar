@@ -257,7 +257,50 @@
     let order = {};
     let view = 'main';
 
-    let defaultDrinks = [/* ... deine defaultDrinks bleiben gleich ... */];
+    let defaultDrinks = [
+        {
+            "id": 1754314600229,
+            "name": "Bier",
+            "price": 5,
+            "emoji": "🍺"
+        },
+        {
+            "id": 1754314547340,
+            "name": "Limonade",
+            "price": 4.5,
+            "emoji": "🥤"
+        },
+        {
+            "id": 1754314508965,
+            "name": "Wasser",
+            "price": 3,
+            "emoji": "🚰"
+        },
+        {
+            "id": 1754314275641,
+            "name": "Schorle",
+            "price": 3.5,
+            "emoji": "🧃"
+        },
+        {
+            "id": 1754314569245,
+            "name": "Alk. freie Biere",
+            "price": 8,
+            "emoji": "🍺🚫"
+        },
+        {
+            "id": 1754314451815,
+            "name": "Schnaps",
+            "price": 2.5,
+            "emoji": "🥃"
+        },
+        {
+            "id": 1754314641597,
+            "name": "Pfand zurück",
+            "price": -2,
+            "emoji": "🫙"
+        }
+    ];
 
     window.onload = () => {
         const stored = localStorage.getItem('drinks');
