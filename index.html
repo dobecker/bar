@@ -236,8 +236,8 @@
     <div class="qr-section">
         <button class="btn btn-add" onclick="generateQR()">📤 Teilen</button>
         <div id="qrcode"></div>
-        <button class="btn btn-add" onclick="importQR()">📥 Laden</button>
-        <input type="file" accept="image/*" id="qrInput" capture="environment" style="display:none;">
+        <button class="btn btn-add" onclick="startScanner()">📥 Laden</button>
+        <div id="reader" style="width:300px; margin:20px auto; display:none;"></div>
     </div>
 </div>
 
@@ -250,6 +250,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lz-string/libs/lz-string.min.js"></script>
+<script src="./lib/qr-code.js"></script>
 
 <script>
     let drinks = [];
@@ -374,44 +375,40 @@
         });
     }
 
-    function importQR() {
-        document.getElementById("qrInput").click();
+    function startScanner() {
+        const readerElem = document.getElementById("reader");
+        readerElem.style.display = "block"; // Scanner sichtbar machen
+
+        const html5QrCode = new Html5Qrcode("reader");
+        html5QrCode.start(
+            { facingMode: "environment" }, // Rückkamera
+            { fps: 10, qrbox: 250 },
+            qrMessage => {
+                try {
+                    const json = LZString.decompressFromEncodedURIComponent(qrMessage);
+                    drinks = JSON.parse(json);
+                    order = {};
+                    drinks.forEach(d => order[d.id] = 0);
+                    save();
+                    render();
+                    renderConfigured();
+                    alert("Getränkeliste importiert!");
+                    html5QrCode.stop().then(() => {
+                        readerElem.style.display = "none"; // Scanner wieder ausblenden
+                    });
+                } catch (e) {
+                    alert("Fehler beim Importieren");
+                }
+            },
+            errorMessage => {
+                // kein gültiger QR → ignorieren
+            }
+        ).catch(err => {
+            console.error("Kamera konnte nicht gestartet werden:", err);
+            alert("Kamera-Zugriff fehlgeschlagen!");
+        });
     }
 
-    document.getElementById("qrInput").addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement("canvas");
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext("2d");
-                ctx.drawImage(img, 0, 0);
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const code = jsQR(imageData.data, imageData.width, imageData.height);
-                if (code) {
-                    try {
-                        const json = LZString.decompressFromEncodedURIComponent(code.data);
-                        drinks = JSON.parse(json);
-                        order = {};
-                        drinks.forEach(d => order[d.id] = 0);
-                        save();
-                        render();
-                        renderConfigured();
-                        alert("Getränkeliste importiert!");
-                    } catch (err) {
-                        alert("Fehler beim Importieren der Konfiguration.");
-                    }
-                } else {
-                    alert("Kein QR-Code erkannt.");
-                }
-            };
-            img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-    });
 </script>
 </body>
 </html>
