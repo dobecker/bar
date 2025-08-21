@@ -419,13 +419,14 @@
     }
 
     function startScanner() {
-        const readerElem = document.getElementById("reader");
-        readerElem.style.display = "block"; // Scanner sichtbar machen
-
         const html5QrCode = new Html5Qrcode("reader");
         html5QrCode.start(
-            { facingMode: "environment" }, // Rückkamera
-            { fps: 10, qrbox: 250 },
+            { facingMode: "environment" },
+            {
+                fps: 20,
+                qrbox: 0, // scannt das ganze Kamerabild
+                experimentalFeatures: { useBarCodeDetectorIfSupported: true }
+            },
             qrMessage => {
                 try {
                     const json = LZString.decompressFromEncodedURIComponent(qrMessage);
@@ -436,20 +437,15 @@
                     render();
                     renderConfigured();
                     alert("Getränkeliste importiert!");
-                    html5QrCode.stop().then(() => {
-                        readerElem.style.display = "none"; // Scanner wieder ausblenden
-                    });
+                    html5QrCode.stop();
                 } catch (e) {
                     alert("Fehler beim Importieren");
                 }
             },
             errorMessage => {
-                // kein gültiger QR → ignorieren
+                // optional: Scan-Fehler ignorieren
             }
-        ).catch(err => {
-            console.error("Kamera konnte nicht gestartet werden:", err);
-            alert("Kamera-Zugriff fehlgeschlagen!");
-        });
+        );
     }
 
 </script>
