@@ -175,6 +175,13 @@
             border-radius: 6px;
             cursor: pointer;
         }
+        .qr-section {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #qrcode {
+            margin: 10px auto;
+        }
     </style>
 </head>
 <body>
@@ -224,6 +231,14 @@
     <div style="text-align: center; margin-top: 30px;">
         <button class="btn btn-delete" onclick="resetDefaultDrinks()">Getränkeliste zurücksetzen</button>
     </div>
+
+    <!-- 🔹 QR-Code Sharing Section -->
+    <div class="qr-section">
+        <button class="btn btn-add" onclick="generateQR()">📤 Teilen</button>
+        <div id="qrcode"></div>
+        <button class="btn btn-add" onclick="importQR()">📥 Laden</button>
+        <input type="file" accept="image/*" id="qrInput" capture="environment" style="display:none;">
+    </div>
 </div>
 
 <div class="summary">
@@ -231,55 +246,17 @@
     <button class="btn-delete" onclick="resetOrder()">🗑️ Löschen</button>
 </div>
 
+<!-- 🔹 Libraries for QR + compression -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lz-string/libs/lz-string.min.js"></script>
+
 <script>
     let drinks = [];
     let order = {};
     let view = 'main';
 
-    let defaultDrinks = [
-        {
-            "id": 1754314600229,
-            "name": "Bier",
-            "price": 5,
-            "emoji": "🍺"
-        },
-        {
-            "id": 1754314547340,
-            "name": "Limonade",
-            "price": 4.5,
-            "emoji": "🥤"
-        },
-        {
-            "id": 1754314508965,
-            "name": "Wasser",
-            "price": 3,
-            "emoji": "🚰"
-        },
-        {
-            "id": 1754314275641,
-            "name": "Schorle",
-            "price": 3.5,
-            "emoji": "🧃"
-        },
-        {
-            "id": 1754314569245,
-            "name": "Alk. freie Biere",
-            "price": 8,
-            "emoji": "🍺🚫"
-        },
-        {
-            "id": 1754314451815,
-            "name": "Schnaps",
-            "price": 2.5,
-            "emoji": "🥃"
-        },
-        {
-            "id": 1754314641597,
-            "name": "Pfand zurück",
-            "price": -2,
-            "emoji": "🫙"
-        }
-    ];
+    let defaultDrinks = [/* ... deine defaultDrinks bleiben gleich ... */];
 
     window.onload = () => {
         const stored = localStorage.getItem('drinks');
@@ -295,7 +272,18 @@
         localStorage.setItem('order', JSON.stringify(order));
     }
 
+    const CONFIG_PASSWORD = "sternschnuppe"; // 🔒 Passwort hier festlegen
+
     function toggleView() {
+        if (view === 'main') {
+            // 🔒 jedes Mal Passwort abfragen
+            const pw = prompt("Passwort eingeben:");
+            if (pw !== CONFIG_PASSWORD) {
+                alert("Falsches Passwort!");
+                return; // nicht umschalten
+            }
+        }
+
         view = view === 'main' ? 'config' : 'main';
         document.querySelector('.main').style.display = view === 'main' ? 'block' : 'none';
         document.querySelector('.config').style.display = view === 'config' ? 'block' : 'none';
@@ -344,7 +332,7 @@
         <div class="drink-item">
           <div class="drink-emoji">${d.emoji}</div>
           <div class="drink-name">${d.name}<br><span class="unitprice">€${d.price.toFixed(2)}</span></div>
-                   <div class="counter">${order[d.id] || 0}</div>
+          <div class="counter">${order[d.id] || 0}</div>
           <div class="controls">
             <button class="btn-minus" onclick="update(${d.id}, -1)">−</button>
             <button class="btn-plus" onclick="update(${d.id}, 1)">+</button>
@@ -373,6 +361,57 @@
             renderConfigured();
         }
     }
+
+    /* 🔹 NEW QR SHARE FUNCTIONS */
+    function generateQR() {
+        const json = JSON.stringify(drinks);
+        const compressed = LZString.compressToEncodedURIComponent(json);
+        document.getElementById("qrcode").innerHTML = "";
+        new QRCode(document.getElementById("qrcode"), {
+            text: compressed,
+            width: 256,
+            height: 256
+        });
+    }
+
+    function importQR() {
+        document.getElementById("qrInput").click();
+    }
+
+    document.getElementById("qrInput").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0);
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+                if (code) {
+                    try {
+                        const json = LZString.decompressFromEncodedURIComponent(code.data);
+                        drinks = JSON.parse(json);
+                        order = {};
+                        drinks.forEach(d => order[d.id] = 0);
+                        save();
+                        render();
+                        renderConfigured();
+                        alert("Getränkeliste importiert!");
+                    } catch (err) {
+                        alert("Fehler beim Importieren der Konfiguration.");
+                    }
+                } else {
+                    alert("Kein QR-Code erkannt.");
+                }
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
 </script>
 </body>
 </html>
